@@ -1,0 +1,38 @@
+pipeline
+{
+	agent any
+	
+	stages{
+		stage ('checkout'){
+			steps{
+				checkout scm
+			}
+		}
+		stage('restore'){
+			steps {
+				sh 'dotnet restore proyectCalculadora.sln'
+			}
+		}
+		stage('Build'){
+			steps {
+				sh 'dotnet build proyectCalculadora.sln --configuration Release --no-build'
+			}
+		}
+		stage('Tests'){
+			steps {
+				sh 'dotnet build CalculadoraApp.Tests/CalculadoraApp.Tests.csproj --configuration Release --no-build'
+			}
+		}
+		stage('Publish'){
+			steps {
+				sh 'dotnet publish CalculadoraApp/CalculadoraApp.csproj -c Release -o publish'
+			}
+		}
+	}
+	
+	post{
+		sucess{
+			archiveArtifacts artifact: 'publish/**', fingerprint:true
+		}
+	}
+}
