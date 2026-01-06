@@ -10,25 +10,25 @@ pipeline {
 
         stage('Restore') {
             steps {
-                bat 'dotnet restore proyectoCalculadora.sln'
+                bat 'dotnet restore projectCalculadora.sln'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build proyectoCalculadora.sln --configuration Release'
+                bat 'dotnet build projectCalculadora.sln --configuration Release'
             }
         }
 
-        stage('Tests') {
+        stage('Test') {
             steps {
-                bat 'dotnet test CalculadoraApp.Tests\\CalculadoraApp.Tests.csproj --configuration Release'
+                bat 'dotnet test calculadoraApp.Tests\\calculadoraApp.Tests.csproj --configuration Release --no-build'
             }
         }
 
         stage('Publish') {
             steps {
-                bat 'dotnet publish CalculadoraApp\\CalculadoraApp.csproj -c Release -o publish'
+                bat 'dotnet publish calculadoraApp\\calculadoraApp.csproj --configuration Release --output publish'
             }
         }
     }
@@ -36,9 +36,6 @@ pipeline {
     post {
         success {
             archiveArtifacts artifacts: 'publish/**', fingerprint: true
-        }
-        failure {
-            echo '❌ El pipeline falló'
         }
     }
 }
