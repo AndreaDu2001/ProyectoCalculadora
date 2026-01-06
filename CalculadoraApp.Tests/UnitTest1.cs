@@ -9,7 +9,7 @@ namespace CalculadoraApp.Tests
             // Arrange
             var calc = new CalculadoraApp.Calculadora();
             var resultado = calc.Sumar(1, 3);
-            Assert.Equal(5, resultado);
+            Assert.Equal(4, resultado);
             
         }
     }
