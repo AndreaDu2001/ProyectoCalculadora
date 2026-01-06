@@ -10,25 +10,25 @@ pipeline {
 
         stage('Restore') {
             steps {
-                sh 'dotnet restore proyectoCalculadora.sln'
+                bat 'dotnet restore proyectoCalculadora.sln'
             }
         }
 
         stage('Build') {
             steps {
-                sh 'dotnet build proyectoCalculadora.sln --configuration Release'
+                bat 'dotnet build proyectoCalculadora.sln --configuration Release'
             }
         }
 
         stage('Tests') {
             steps {
-                sh 'dotnet test CalculadoraApp.Tests/CalculadoraApp.Tests.csproj --configuration Release'
+                bat 'dotnet test CalculadoraApp.Tests\\CalculadoraApp.Tests.csproj --configuration Release'
             }
         }
 
         stage('Publish') {
             steps {
-                sh 'dotnet publish CalculadoraApp/CalculadoraApp.csproj -c Release -o publish'
+                bat 'dotnet publish CalculadoraApp\\CalculadoraApp.csproj -c Release -o publish'
             }
         }
     }
