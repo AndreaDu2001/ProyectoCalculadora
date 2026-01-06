@@ -1,38 +1,44 @@
-pipeline
-{
-	agent any
-	
-	stages{
-		stage ('checkout'){
-			steps{
-				checkout scm
-			}
-		}
-		stage('restore'){
-			steps {
-				sh 'dotnet restore proyectCalculadora.sln'
-			}
-		}
-		stage('Build'){
-			steps {
-				sh 'dotnet build proyectCalculadora.sln --configuration Release --no-build'
-			}
-		}
-		stage('Tests'){
-			steps {
-				sh 'dotnet build CalculadoraApp.Tests/CalculadoraApp.Tests.csproj --configuration Release --no-build'
-			}
-		}
-		stage('Publish'){
-			steps {
-				sh 'dotnet publish CalculadoraApp/CalculadoraApp.csproj -c Release -o publish'
-			}
-		}
-	}
-	
-	post{
-		sucess{
-			archiveArtifacts artifact: 'publish/**', fingerprint:true
-		}
-	}
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Restore') {
+            steps {
+                sh 'dotnet restore proyectoCalculadora.sln'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'dotnet build proyectoCalculadora.sln --configuration Release'
+            }
+        }
+
+        stage('Tests') {
+            steps {
+                sh 'dotnet test CalculadoraApp.Tests/CalculadoraApp.Tests.csproj --configuration Release'
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                sh 'dotnet publish CalculadoraApp/CalculadoraApp.csproj -c Release -o publish'
+            }
+        }
+    }
+
+    post {
+        success {
+            archiveArtifacts artifacts: 'publish/**', fingerprint: true
+        }
+        failure {
+            echo '❌ El pipeline falló'
+        }
+    }
 }
