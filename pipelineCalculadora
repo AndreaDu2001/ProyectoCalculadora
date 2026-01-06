@@ -10,13 +10,13 @@ pipeline {
 
         stage('Restore') {
             steps {
-                bat 'dotnet restore projectCalculadora.sln'
+                bat 'dotnet restore proyectCalculadora.sln'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'dotnet build projectCalculadora.sln --configuration Release'
+                bat 'dotnet build proyectCalculadora.sln --configuration Release'
             }
         }
 
